@@ -44,12 +44,11 @@ obstacle_model.tflite
 depth_model.tflite
 Note: Ensure the model paths match the constants defined in Constants.kt (e.g., DOOR_MODEL_PATH, OBSTACLE_MODEL_PATH, DEPTH_MODEL_PATH).
 
-3. Configure Build
+### 3. Configure Build
 Open the project in Android Studio and ensure the following dependencies are included in app/build.gradle:
 
 gradle
 
-Copy
 dependencies {
     implementation "org.tensorflow:tensorflow-lite:2.14.0"
     implementation "org.tensorflow:tensorflow-lite-support:0.4.4"
@@ -65,44 +64,44 @@ dependencies {
 }
 Sync the project with Gradle to resolve dependencies.
 
-4. Build and Run
+### 4. Build and Run
 Connect an Android device or start an emulator.
 Build and run the app using Android Studio.
-Usage
+#### Usage
 Grant Camera Permission: On first launch, the app requests camera permission. Grant it to enable detection.
 Camera Preview: The app displays a camera preview using the rear camera.
-Capture Mode:
+##### Capture Mode:
 Press the Capture button to take a photo and analyze it for doors and obstacles.
 The app processes the image and provides audio feedback with navigation guidance.
-Continuous Scanning Mode:
+##### Continuous Scanning Mode:
 Press the Start button to enable continuous scanning.
 The app captures and analyzes images every 3 seconds, providing real-time audio updates.
 Press Stop to disable continuous scanning.
-Navigation Guidance:
+##### Navigation Guidance:
 The app uses TTS to guide users, e.g., "Go straight towards the door" or "Stop! Obstacle detected at approximately 2.5 meters."
 Guidance is based on door positions, obstacle locations, and estimated depths.
 Technical Details
-Architecture:
+##### Architecture:
 The app follows a modular design with Jetpack Compose for UI and CameraX for camera integration.
 TensorFlow Lite models are loaded from assets and run with NNAPI for hardware acceleration.
-Model Processing:
+##### Model Processing:
 YOLO: Detects doors with a confidence threshold of 0.8.
 YOLOv8: Detects obstacles (80 classes, e.g., person, chair) with a confidence threshold of 0.6.
 MiDaS: Generates depth maps for obstacles to estimate proximity.
 Non-Maximum Suppression (NMS) is applied to filter overlapping detections (IoU threshold: 0.8).
-Image Processing:
+##### Image Processing:
 Images are preprocessed to 640x640 for YOLO/YOLOv8 and 256x256 for MiDaS.
 Outputs are post-processed to scale bounding boxes to the original image dimensions.
-Navigation Logic:
+##### Navigation Logic:
 The app evaluates door and obstacle positions to determine if the path is clear.
 Depth estimates help prioritize close obstacles (threshold: 1.5 units).
 Uniform image detection prevents guidance when the camera is too close to an object.
-Limitations
+##### Limitations
 Model Accuracy: Detection accuracy depends on the quality of the TensorFlow Lite models and lighting conditions.
 Device Performance: Real-time processing may be slower on low-end devices without NNAPI support.
 Depth Estimation: MiDaS provides relative depth, not absolute distances, which may affect guidance precision.
 Camera Orientation: The app assumes the device is held in portrait mode for accurate bounding box scaling.
-Contributing
+#### Contributing
 Contributions are welcome! To contribute:
 
 Fork the repository.
